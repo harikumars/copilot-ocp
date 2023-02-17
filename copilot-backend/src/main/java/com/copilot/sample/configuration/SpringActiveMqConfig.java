@@ -26,6 +26,8 @@ public class SpringActiveMqConfig {
 	@Value("${active-mq.broker-url}")
     private String password;
 	
+	@Value("${active-mq.queueName}")
+    private String queueName;
 	
 	@Bean
 	public ActiveMQConnectionFactory activeMQConnectionFactory() {
@@ -41,19 +43,18 @@ public class SpringActiveMqConfig {
 		JmsTemplate jmsTemplate = new JmsTemplate();
 		jmsTemplate.setConnectionFactory(activeMQConnectionFactory());
 		//jmsTemplate.setMessageConverter(messageConverter());
-
 		return jmsTemplate;
 	}
 
 	@Bean
 	public Queue activeMQQueue() {
-		return new ActiveMQQueue("testQ");
+		return new ActiveMQQueue(queueName.trim());
 	}
 
-	@Bean
-	public org.springframework.jms.support.converter.MessageConverter messageConverter() {
-		org.springframework.jms.support.converter.MappingJackson2MessageConverter messageConverter = new org.springframework.jms.support.converter.MappingJackson2MessageConverter();
-		messageConverter.setTypeIdPropertyName("_type");
-		return messageConverter;
-	}
+//	@Bean
+//	public org.springframework.jms.support.converter.MessageConverter messageConverter() {
+//		org.springframework.jms.support.converter.MappingJackson2MessageConverter messageConverter = new org.springframework.jms.support.converter.MappingJackson2MessageConverter();
+//		messageConverter.setTypeIdPropertyName("_type");
+//		return messageConverter;
+//	}
 }
