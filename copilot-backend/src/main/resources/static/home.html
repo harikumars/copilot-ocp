@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+  //add the title as Co-pilot POC and add the bootstrap css and js files
+    <title>Co-pilot POC</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Co-pilot POC</h1>
+                <form id="custForm">
+                    <div class="form-group">
+                        <label for="customerName">Name:</label>
+                        <input type="text" class="form-control" id="customerName" name="customerName">
+                    </div>
+                    <div class="form-group">
+                        <label for="customerEmail">Email:</label>
+                        <input type="text" class="form-control" id="customerEmail" name="customerEmail">
+                    </div>
+                    <div class="form-group">
+                        <label for="LEI">LEI:</label>
+                        <input type="text" class="form-control" id="LEI" name="lei">
+                    </div>
+                    <div class="form-group">
+                        <label for="SWIFTBIC">SWIFTBIC:</label>
+                        <input type="text" class="form-control" id="SWIFTBIC" name="swiftBic">
+                    </div>
+                    <div class="form-group">
+                        <label for="CICI">CICI:</label>
+                        <input type="text" class="form-control" id="CICI" name="cici">
+                    </div>
+                    <div class="form-group">
+                        <label for="DTCC">DTCC:</label>
+                        <input type="text" class="form-control" id="DTCC" name="dtcc">
+                    </div>
+                    <div class="form-group">
+                        <label for="AVOX">AVOX:</label>
+                        <input type="text" class="form-control" id="AVOX" name="avox">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        const form = document.getElementById('custForm');
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+            const data = new FormData(form);
+            const value = Object.fromEntries(data.entries());
+            console.log(value);
+            fetch('/createCustomer', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(value)
+            }).then(response => response.json())
+
+             //if data status is success then display the response else display the error message
+                .then(data => {
+                    if(data.status === 'success'){
+                        alert(data.message);
+                    }else{
+                        alert(data.message);
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+
+        });
+    </script>
+
+</body>
+
+</html>
